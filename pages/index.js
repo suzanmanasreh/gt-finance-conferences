@@ -4,7 +4,7 @@ import Footer from "../components/Footer.jsx";
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen w-screen">
+    <div className="flex flex-col min-h-screen w-screen bg-white-20">
       <Head>
         <title>Finance Conferences</title>
         <meta
@@ -14,7 +14,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
-      <main>
+      <main className="">
         <h1 className="m-5">Conference Listings</h1>
       </main>
 
