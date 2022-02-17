@@ -4,6 +4,13 @@ import Footer from "../components/Footer.jsx";
 import { conferences } from "../data/conference_data";
 import Card from "../components/Card.jsx";
 
+{
+  /* 
+  TODO: import data from google sheets
+  TODO: make add conference form
+  */
+}
+
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen w-screen bg-white">

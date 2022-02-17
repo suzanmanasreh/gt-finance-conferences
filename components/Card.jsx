@@ -1,5 +1,10 @@
 import React from "react";
-
+{
+  /* 
+  TODO: make cards link to conference website
+  TODO: add calendar icon and make it add conference date to calendar 
+  */
+}
 const Card = ({ conference }) => {
   return (
     <div className="border-2 border-stone-800 bg-white-20 p-2">
