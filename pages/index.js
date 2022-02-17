@@ -32,10 +32,10 @@ export default function Home() {
           <div className="w-full border-t-4 border-stone-700"></div>
         </div>
 
-        <div className="pt-4 grid grid-cols-2 gap-4">
+        <div className="pt-4 sm:grid sm:grid-cols-2 sm:gap-4">
           {conferences.map((conference) => {
             return (
-              <div key={conference.id} className="">
+              <div key={conference.id} className="pt-2 sm:pt-1">
                 <Card conference={conference} />
               </div>
             );
