@@ -3,15 +3,19 @@ import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import { conferences } from "../data/conference_data";
 import Card from "../components/Card.jsx";
+import { conference_googlesheet } from "../data/conference_data_googlesheet"
 
 {
   /* 
-  TODO: import data from google sheets
   TODO: make add conference form
   */
 }
 
 export default function Home() {
+  conference_googlesheet()
+  .then((conferences_googlesheet) => {
+    return conferences_googlesheet
+  })
   return (
     <div className="flex flex-col min-h-screen w-screen bg-white">
       <Head>
@@ -32,6 +36,7 @@ export default function Home() {
           <div className="w-full border-t-4 border-stone-700"></div>
         </div>
 
+        {console.log("test")}
         <div className="pt-4 sm:grid sm:grid-cols-2 sm:gap-4">
           {conferences.map((conference) => {
             return (
