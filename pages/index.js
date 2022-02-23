@@ -3,13 +3,7 @@ import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 //import { conferences } from "../data/conference_data";
 import Card from "../components/Card.jsx";
-//import { conference_googlesheet } from "../data/conference_data_googlesheet"
 
-{
-  /* 
-  TODO: make add conference form
-  */
-}
 
 export async function getServerSideProps() {
 
