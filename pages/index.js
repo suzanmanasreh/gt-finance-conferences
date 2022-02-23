@@ -1,9 +1,9 @@
 import Head from "next/head";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
-import { conferences } from "../data/conference_data";
+//import { conferences } from "../data/conference_data";
 import Card from "../components/Card.jsx";
-import { conference_googlesheet } from "../data/conference_data_googlesheet"
+//import { conference_googlesheet } from "../data/conference_data_googlesheet"
 
 {
   /* 
@@ -11,11 +11,41 @@ import { conference_googlesheet } from "../data/conference_data_googlesheet"
   */
 }
 
-export default function Home() {
-  conference_googlesheet()
-  .then((conferences_googlesheet) => {
-    return conferences_googlesheet
+export async function getServerSideProps() {
+
+  const url = 'https://docs.google.com/spreadsheets/d/';
+  const ssid = '1bnDnFobjyvRSZhDDTZCIDdRRaay-f5Z9g3Sal8YqgEo';
+  const query1 = `/gviz/tq?`;
+  const endpoint1 = `${url}${ssid}${query1}`;
+  //console.log(endpoint1)
+  const res = await fetch(endpoint1, {
+    method: 'get',
   })
+  const raw = await res.text()
+  const data = raw.slice(47, -2);
+  const json = JSON.parse(data);
+  const rows = json.table.rows
+  const cols = json.table.cols
+  const conferences = []
+  rows.forEach((row, i_row) => {
+    const conference = {}
+    cols.forEach((col, i) => {
+      conference[col.label.toLowerCase()] = row.c[i].f ? row.c[i].f : row.c[i].v
+      conference.id = i_row + 1
+      conference.name = conference.conference;
+      conference.submission_deadline = conference.submission
+      conference.topics = "N/A"
+      conference.submission_fee = "0"
+    })
+    conferences.push(conference)
+  });
+  return {
+    props: { conferences},
+  }
+}
+
+export default function Home({ conferences }) {
+  console.log(conferences)
   return (
     <div className="flex flex-col min-h-screen w-screen bg-white">
       <Head>
@@ -36,7 +66,6 @@ export default function Home() {
           <div className="w-full border-t-4 border-stone-700"></div>
         </div>
 
-        {console.log("test")}
         <div className="pt-4 sm:grid sm:grid-cols-2 sm:gap-4">
           {conferences.map((conference) => {
             return (
