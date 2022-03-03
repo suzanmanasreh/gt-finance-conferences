@@ -1,7 +1,6 @@
 import Head from "next/head";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
-//import { conferences } from "../data/conference_data";
 import Card from "../components/Card.jsx";
 const { google } = require("googleapis");
 
@@ -61,12 +60,17 @@ export default function Home({ conferences }) {
       </Head>
       <Navbar />
       <main className="container w-full sm:max-w-4xl sm:mx-auto p-5 sm:m-3">
-        <h1 className="text-black-950 text-2xl sm:text-3xl font-semibold mb-3">
-          Conference Listings
-        </h1>
+        <div className="flex justify-between">
+          <h1 className="text-black-950 text-2xl sm:text-3xl font-semibold mb-3">
+            Conference Listings
+          </h1>
+          <div>
+            <Button text="sort by" />
+          </div>
+        </div>
         {/* horizontal rule */}
         <div className="relative">
-          <div className="w-full border-t-4 border-stone-700"></div>
+          <div className="w-full border-t-4 border-stone-800"></div>
         </div>
 
         <div className="pt-4 sm:grid sm:grid-cols-2 sm:gap-4">

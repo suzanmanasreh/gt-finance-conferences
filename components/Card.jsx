@@ -18,7 +18,7 @@ const Card = ({ conference }) => {
             <div className="hover:text-yellow-20">{conference.name}</div>
           </a>
         </Link>
-        <div className="shrink-0 p-1 hover:text-blue-950">
+        <div className="shrink-0 p-1 hover:text-yellow-20">
           <FaCalendarAlt size={20} />
         </div>
       </div>
@@ -37,10 +37,10 @@ const Card = ({ conference }) => {
         {"Submission Deadline: "}
         {conference.submission_deadline}
       </div>
-      <div className="font-medium text-stone-800 text-sm italic text-blue-950">
+      {/* <div className="font-medium text-stone-800 text-sm italic text-blue-950">
         {"Submission Fee: $"}
         {conference.submission_fee}
-      </div>
+      </div> */}
     </div>
   );
 };
