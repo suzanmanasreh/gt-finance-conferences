@@ -3,15 +3,16 @@ import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import Card from "../components/Card.jsx";
 const { google } = require("googleapis");
+import Button from "../components/Button";
 
 export async function getServerSideProps() {
+  const auth = await google.auth.getClient({
+    scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
+  });
 
-  const auth = await google.auth.getClient({ scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'] });
-
-  const sheets = google.sheets({ version: 'v4', auth });
+  const sheets = google.sheets({ version: "v4", auth });
 
   const range = `Sheet1!A1:F`;
-
 
   const response = await sheets.spreadsheets.values.get({
     spreadsheetId: process.env.SHEET_ID,
@@ -20,34 +21,33 @@ export async function getServerSideProps() {
 
   //console.log(response.data.values)
 
-  const keys = response.data.values[0]
-  
-  const rows = response.data.values.slice(1)
+  const keys = response.data.values[0];
 
-  const conferences = []
+  const rows = response.data.values.slice(1);
+
+  const conferences = [];
 
   rows.forEach((row, i_row) => {
-    const conference = {}
+    const conference = {};
     row.forEach((entry, i) => {
-      conference[keys[i].toLowerCase()] = entry
-      conference.id = i_row + 1
+      conference[keys[i].toLowerCase()] = entry;
+      conference.id = i_row + 1;
       conference.name = conference.conference;
-      conference.submission_deadline = conference.submission
-      conference.topics = "General Finance"
-      conference.submission_fee = "0"
-    })
-    conferences.push(conference)
-  })
+      conference.submission_deadline = conference.submission;
+      conference.topics = "General Finance";
+      conference.submission_fee = "0";
+    });
+    conferences.push(conference);
+  });
 
   //console.log(conferences)
 
   return {
     props: { conferences },
-  }
+  };
 }
 
 export default function Home({ conferences }) {
-  
   return (
     <div className="flex flex-col min-h-screen w-screen bg-white">
       <Head>
