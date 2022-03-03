@@ -28,7 +28,7 @@ export async function getServerSideProps() {
       conference.id = i_row + 1;
       conference.name = conference.conference;
       conference.submission_deadline = conference.submission;
-      conference.topics = "N/A";
+      conference.topics = "General Finance";
       conference.submission_fee = "0";
     });
     conferences.push(conference);
