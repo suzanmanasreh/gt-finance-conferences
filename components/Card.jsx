@@ -30,8 +30,8 @@ const Card = ({ conference }) => {
         {conference.end}
       </div>
       <div className="font-medium text-stone-800 text-sm italic text-blue-950">
-        {"Topics: General Finance"}
-        {/* {conference.topics} */}
+        {"Topics: "}
+        {conference.topics}
       </div>
       <div className="font-medium text-stone-800 text-sm italic text-blue-950">
         {"Submission Deadline: "}
