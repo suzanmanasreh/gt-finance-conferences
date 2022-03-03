@@ -3,28 +3,34 @@ import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 //import { conferences } from "../data/conference_data";
 import Card from "../components/Card.jsx";
-
+const { google } = require("googleapis");
 
 export async function getServerSideProps() {
 
-  const url = 'https://docs.google.com/spreadsheets/d/';
-  const ssid = '1bnDnFobjyvRSZhDDTZCIDdRRaay-f5Z9g3Sal8YqgEo';
-  const query1 = `/gviz/tq?`;
-  const endpoint1 = `${url}${ssid}${query1}`;
-  //console.log(endpoint1)
-  const res = await fetch(endpoint1, {
-    method: 'get',
-  })
-  const raw = await res.text()
-  const data = raw.slice(47, -2);
-  const json = JSON.parse(data);
-  const rows = json.table.rows
-  const cols = json.table.cols
+  const auth = await google.auth.getClient({ scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'] });
+
+  const sheets = google.sheets({ version: 'v4', auth });
+
+  const range = `Sheet1!A1:F`;
+
+
+  const response = await sheets.spreadsheets.values.get({
+    spreadsheetId: process.env.SHEET_ID,
+    range,
+  });
+
+  //console.log(response.data.values)
+
+  const keys = response.data.values[0]
+  
+  const rows = response.data.values.slice(1)
+
   const conferences = []
+
   rows.forEach((row, i_row) => {
     const conference = {}
-    cols.forEach((col, i) => {
-      conference[col.label.toLowerCase()] = row.c[i].f ? row.c[i].f : row.c[i].v
+    row.forEach((entry, i) => {
+      conference[keys[i].toLowerCase()] = entry
       conference.id = i_row + 1
       conference.name = conference.conference;
       conference.submission_deadline = conference.submission
@@ -32,14 +38,17 @@ export async function getServerSideProps() {
       conference.submission_fee = "0"
     })
     conferences.push(conference)
-  });
+  })
+
+  //console.log(conferences)
+
   return {
-    props: { conferences},
+    props: { conferences },
   }
 }
 
 export default function Home({ conferences }) {
-  console.log(conferences)
+  
   return (
     <div className="flex flex-col min-h-screen w-screen bg-white">
       <Head>
