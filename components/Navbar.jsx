@@ -19,11 +19,11 @@ const Navbar = () => {
             Financial Conferences
           </a>
         </Link>
-        <Link href="/" passHref>
+        {/* <Link href="/" passHref>
           <a className="text-black-950 font-semibold text-l sm:text-xl sm:pl-6">
             Add Conference
           </a>
-        </Link>
+        </Link> */}
       </div>
     </div>
   );
