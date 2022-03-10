@@ -5,6 +5,36 @@ import Card from "../components/Card.jsx";
 const { google } = require("googleapis");
 import Button from "../components/Button";
 
+
+function sortByDefaultOrder(conferences) {
+  conferences.sort(function (a, b) {
+    var date_a = new Date(a.start)
+    var date_b = new Date(b.start)
+    if (date_a > date_b) {
+      return 1
+    }
+    else if (date_a < date_b) {
+      return -1
+    }
+    else {
+      return 0
+    }
+  })
+  var past_conferences = [];
+  var future_conferences = [];
+  conferences.forEach((conference) => {
+    var today = new Date(new Date().toDateString());
+    var start_date = new Date(conference.start);
+    if (start_date < today) {
+      past_conferences.push(conference)
+    }
+    else {
+      future_conferences.push(conference)
+    }
+  });
+  return future_conferences.concat(past_conferences.reverse())
+}
+
 export async function getServerSideProps() {
   const auth = await google.auth.getClient({
     scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
@@ -19,13 +49,11 @@ export async function getServerSideProps() {
     range,
   });
 
-  //console.log(response.data.values)
-
   const keys = response.data.values[0];
 
   const rows = response.data.values.slice(1);
 
-  const conferences = [];
+  const raw_conferences = [];
 
   rows.forEach((row, i_row) => {
     const conference = {};
@@ -37,10 +65,11 @@ export async function getServerSideProps() {
       conference.topics = "General Finance";
       conference.submission_fee = "0";
     });
-    conferences.push(conference);
+    raw_conferences.push(conference);
   });
 
-  //console.log(conferences)
+  const conferences = sortByDefaultOrder(raw_conferences);
+
 
   return {
     props: { conferences },
