@@ -5,34 +5,30 @@ import Card from "../components/Card.jsx";
 const { google } = require("googleapis");
 import Button from "../components/Button";
 
-
 function sortByDefaultOrder(conferences) {
   conferences.sort(function (a, b) {
-    var date_a = new Date(a.start)
-    var date_b = new Date(b.start)
+    var date_a = new Date(a.start);
+    var date_b = new Date(b.start);
     if (date_a > date_b) {
-      return 1
+      return 1;
+    } else if (date_a < date_b) {
+      return -1;
+    } else {
+      return 0;
     }
-    else if (date_a < date_b) {
-      return -1
-    }
-    else {
-      return 0
-    }
-  })
+  });
   var past_conferences = [];
   var future_conferences = [];
   conferences.forEach((conference) => {
     var today = new Date(new Date().toDateString());
     var start_date = new Date(conference.start);
     if (start_date < today) {
-      past_conferences.push(conference)
-    }
-    else {
-      future_conferences.push(conference)
+      past_conferences.push(conference);
+    } else {
+      future_conferences.push(conference);
     }
   });
-  return future_conferences.concat(past_conferences.reverse())
+  return future_conferences.concat(past_conferences.reverse());
 }
 
 export async function getServerSideProps() {
@@ -70,7 +66,6 @@ export async function getServerSideProps() {
 
   const conferences = sortByDefaultOrder(raw_conferences);
 
-
   return {
     props: { conferences },
   };
@@ -93,9 +88,9 @@ export default function Home({ conferences }) {
           <h1 className="text-black-950 text-2xl sm:text-3xl font-semibold mb-3">
             Conference Listings
           </h1>
-          <div>
+          {/* <div>
             <Button text="sort by" />
-          </div>
+          </div> */}
         </div>
         {/* horizontal rule */}
         <div className="relative">
