@@ -28,7 +28,9 @@ function sortByDefaultOrder(conferences) {
       future_conferences.push(conference);
     }
   });
-  return future_conferences.concat(past_conferences.reverse());
+  //Removed past conferences, only display future conferences.
+  //return future_conferences.concat(past_conferences.reverse());
+  return future_conferences;
 }
 
 export async function getServerSideProps() {

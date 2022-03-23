@@ -1,12 +1,32 @@
 import React from "react";
 import { FaCalendarAlt } from "react-icons/fa";
 import Link from "next/link";
+const ics = require('ics')
+const FileSaver = require('file-saver');
 
-{
-  /* 
-  TODO: make it so that when user clicks calendar button they can add conference date to their calendar 
-  TODO: or install add to calendar package and use that
-  */
+function createIcs(conference) {
+  var start_date = new Date(conference.start);
+  var end_date = new Date(conference.end);
+  const event = {
+    start: [start_date.getFullYear(), start_date.getMonth(), start_date.getDate()],
+    end: [end_date.getFullYear(), end_date.getMonth(), end_date.getDate()],
+    title: conference.name,
+    description: "Submission Deadline: " + conference.submission_deadline,
+    location: conference.location,
+    url: conference.website,
+    categories: [conference.topics],
+    status: 'TENTATIVE'
+  }
+
+  ics.createEvent(event, (error, value) => {
+    if (error) {
+      console.log(error)
+      return
+    }
+    console.log(value)
+    var file = new File([value], "conference.ics", {type: "text/plain;charset=utf-8"});
+    FileSaver.saveAs(file)
+})
 }
 
 const Card = ({ conference }) => {
@@ -19,7 +39,7 @@ const Card = ({ conference }) => {
           </a>
         </Link>
         <div className="shrink-0 p-1 hover:text-yellow-20">
-          <FaCalendarAlt size={20} />
+          <FaCalendarAlt size={20} onClick={() => {createIcs(conference)}} />
         </div>
       </div>
       <div className="font-medium text-stone-800 text-sm">
